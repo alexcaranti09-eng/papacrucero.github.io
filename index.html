@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>¿Dónde está Juan?</title>
+
+<style>
+body{
+    font-family: Arial;
+    text-align:center;
+    padding:20px;
+}
+.card{
+    border:1px solid #ccc;
+    border-radius:15px;
+    padding:20px;
+    margin:auto;
+    max-width:400px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🚢 ¿Dónde está Juan?</h1>
+
+<div class="card">
+    <h2 id="estado"></h2>
+    <h3 id="lugar"></h3>
+    <p id="hora"></p>
+</div>
+
+<script>
+
+const itinerario = {
+"2026-05-31":"Mykonos, Grecia",
+"2026-06-01":"Piraeus (Atenas), Grecia",
+"2026-06-02":"Mykonos, Grecia",
+"2026-06-03":"Estambul, Turquía",
+"2026-06-04":"Estambul, Turquía",
+"2026-06-05":"Navegando",
+"2026-06-06":"Kusadasi, Turquía",
+"2026-06-07":"Santorini, Grecia"
+};
+
+const hoy = new Date().toISOString().slice(0,10);
+
+if(itinerario[hoy]){
+    if(itinerario[hoy] === "Navegando"){
+        document.getElementById("estado").innerText="🌊 Navegando";
+        document.getElementById("lugar").innerText="En el mar";
+    }else{
+        document.getElementById("estado").innerText="⚓ Amarrado";
+        document.getElementById("lugar").innerText=itinerario[hoy];
+    }
+}else{
+    document.getElementById("estado").innerText="Sin datos";
+}
+
+document.getElementById("hora").innerText =
+"Hora actual: " + new Date().toLocaleTimeString();
+
+</script>
+
+</body>
+</html>
