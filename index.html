@@ -1,65 +1,164 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>¿Dónde está Juan?</title>
 
 <style>
 body{
-    font-family: Arial;
+    font-family: Arial, sans-serif;
+    background:#0f172a;
+    color:white;
     text-align:center;
     padding:20px;
 }
+
 .card{
-    border:1px solid #ccc;
-    border-radius:15px;
-    padding:20px;
+    background:#1e293b;
+    border-radius:20px;
+    padding:25px;
+    max-width:500px;
     margin:auto;
-    max-width:400px;
+    box-shadow:0 0 20px rgba(0,0,0,.3);
+}
+
+h1{
+    margin-top:0;
+}
+
+.estado{
+    font-size:28px;
+    margin:15px 0;
+}
+
+.info{
+    font-size:20px;
+    margin:10px 0;
+}
+
+.hora{
+    font-size:24px;
+    font-weight:bold;
+    color:#38bdf8;
 }
 </style>
 </head>
-
 <body>
 
-<h1>🚢 ¿Dónde está Juan?</h1>
-
 <div class="card">
-    <h2 id="estado"></h2>
-    <h3 id="lugar"></h3>
-    <p id="hora"></p>
+    <h1>🚢 ¿Dónde está Juan?</h1>
+
+    <div class="estado" id="estado"></div>
+    <div class="info" id="ubicacion"></div>
+    <div class="hora" id="hora"></div>
+    <div class="info" id="detalle"></div>
 </div>
 
 <script>
 
-const itinerario = {
-"2026-05-31":"Mykonos, Grecia",
-"2026-06-01":"Piraeus (Atenas), Grecia",
-"2026-06-02":"Mykonos, Grecia",
-"2026-06-03":"Estambul, Turquía",
-"2026-06-04":"Estambul, Turquía",
-"2026-06-05":"Navegando",
-"2026-06-06":"Kusadasi, Turquía",
-"2026-06-07":"Santorini, Grecia"
-};
+const itinerario = [
+{fecha:"2026-05-31", lugar:"Mykonos, Grecia", zona:"Europe/Athens"},
+{fecha:"2026-06-01", lugar:"Piraeus (Atenas), Grecia", zona:"Europe/Athens"},
+{fecha:"2026-06-02", lugar:"Mykonos, Grecia", zona:"Europe/Athens"},
+{fecha:"2026-06-03", lugar:"Estambul, Turquía", zona:"Europe/Istanbul"},
+{fecha:"2026-06-04", lugar:"Estambul, Turquía", zona:"Europe/Istanbul"},
+{fecha:"2026-06-05", lugar:"NAVEGANDO"},
+{fecha:"2026-06-06", lugar:"Kusadasi, Turquía", zona:"Europe/Istanbul"},
+{fecha:"2026-06-07", lugar:"Santorini, Grecia", zona:"Europe/Athens"},
+{fecha:"2026-06-08", lugar:"Piraeus (Atenas), Grecia", zona:"Europe/Athens"},
+{fecha:"2026-06-09", lugar:"Mykonos, Grecia", zona:"Europe/Athens"},
+{fecha:"2026-06-10", lugar:"Kusadasi, Turquía", zona:"Europe/Istanbul"},
+{fecha:"2026-06-11", lugar:"Santorini, Grecia", zona:"Europe/Athens"},
+{fecha:"2026-06-12", lugar:"Chania, Grecia", zona:"Europe/Athens"},
+{fecha:"2026-06-13", lugar:"Katakolon, Grecia", zona:"Europe/Athens"},
+{fecha:"2026-06-14", lugar:"NAVEGANDO"},
+{fecha:"2026-06-15", lugar:"Civitavecchia (Roma), Italia", zona:"Europe/Rome"},
+{fecha:"2026-06-16", lugar:"Livorno, Italia", zona:"Europe/Rome"},
+{fecha:"2026-06-17", lugar:"Santa Margherita, Italia", zona:"Europe/Rome"},
+{fecha:"2026-06-18", lugar:"Villefranche, Francia", zona:"Europe/Paris"},
+{fecha:"2026-06-19", lugar:"Marsella, Francia", zona:"Europe/Paris"},
+{fecha:"2026-06-20", lugar:"NAVEGANDO"},
+{fecha:"2026-06-21", lugar:"Ibiza, España", zona:"Europe/Madrid"},
+{fecha:"2026-06-22", lugar:"Barcelona, España", zona:"Europe/Madrid"},
+{fecha:"2026-06-23", lugar:"Tolón, Francia", zona:"Europe/Paris"},
+{fecha:"2026-06-24", lugar:"Ajaccio, Francia", zona:"Europe/Paris"},
+{fecha:"2026-06-25", lugar:"Civitavecchia (Roma), Italia", zona:"Europe/Rome"},
+{fecha:"2026-06-26", lugar:"Nápoles, Italia", zona:"Europe/Rome"},
+{fecha:"2026-06-27", lugar:"Messina, Italia", zona:"Europe/Rome"},
+{fecha:"2026-06-28", lugar:"NAVEGANDO"},
+{fecha:"2026-06-29", lugar:"Dubrovnik, Croacia", zona:"Europe/Zagreb"},
+{fecha:"2026-06-30", lugar:"Koper, Eslovenia", zona:"Europe/Ljubljana"},
+{fecha:"2026-07-01", lugar:"Split, Croacia", zona:"Europe/Zagreb"},
+{fecha:"2026-07-02", lugar:"Dubrovnik, Croacia", zona:"Europe/Zagreb"},
+{fecha:"2026-07-03", lugar:"Kotor, Montenegro", zona:"Europe/Podgorica"},
+{fecha:"2026-07-04", lugar:"NAVEGANDO"},
+{fecha:"2026-07-05", lugar:"Nápoles, Italia", zona:"Europe/Rome"},
+{fecha:"2026-07-06", lugar:"Civitavecchia (Roma), Italia", zona:"Europe/Rome"},
+{fecha:"2026-07-07", lugar:"Nápoles, Italia", zona:"Europe/Rome"},
+{fecha:"2026-07-08", lugar:"Messina, Italia", zona:"Europe/Rome"},
+{fecha:"2026-07-09", lugar:"NAVEGANDO"},
+{fecha:"2026-07-10", lugar:"Santorini, Grecia", zona:"Europe/Athens"},
+{fecha:"2026-07-11", lugar:"Kusadasi, Turquía", zona:"Europe/Istanbul"},
+{fecha:"2026-07-12", lugar:"Mykonos, Grecia", zona:"Europe/Athens"},
+{fecha:"2026-07-13", lugar:"Piraeus (Atenas), Grecia", zona:"Europe/Athens"}
+];
 
-const hoy = new Date().toISOString().slice(0,10);
+const hoy = new Date().toISOString().split("T")[0];
 
-if(itinerario[hoy]){
-    if(itinerario[hoy] === "Navegando"){
-        document.getElementById("estado").innerText="🌊 Navegando";
-        document.getElementById("lugar").innerText="En el mar";
-    }else{
-        document.getElementById("estado").innerText="⚓ Amarrado";
-        document.getElementById("lugar").innerText=itinerario[hoy];
-    }
-}else{
-    document.getElementById("estado").innerText="Sin datos";
+const actual = itinerario.find(x => x.fecha === hoy);
+
+if(!actual){
+    document.getElementById("estado").innerHTML="📅 Fuera del itinerario";
 }
+else if(actual.lugar==="NAVEGANDO"){
 
-document.getElementById("hora").innerText =
-"Hora actual: " + new Date().toLocaleTimeString();
+    const indice = itinerario.findIndex(x => x.fecha===hoy);
+
+    let origen = "";
+    let destino = "";
+
+    for(let i=indice-1;i>=0;i--){
+        if(itinerario[i].lugar!=="NAVEGANDO"){
+            origen=itinerario[i];
+            break;
+        }
+    }
+
+    for(let i=indice+1;i<itinerario.length;i++){
+        if(itinerario[i].lugar!=="NAVEGANDO"){
+            destino=itinerario[i];
+            break;
+        }
+    }
+
+    document.getElementById("estado").innerHTML="🌊 Navegando";
+    document.getElementById("ubicacion").innerHTML=
+        `De: ${origen.lugar}<br>Hacia: ${destino.lugar}`;
+
+    const hora = new Date().toLocaleTimeString("es-AR",{
+        timeZone: destino.zona,
+        hour:'2-digit',
+        minute:'2-digit'
+    });
+
+    document.getElementById("hora").innerHTML="🕒 "+hora;
+    document.getElementById("detalle").innerHTML="🚢 En tránsito";
+}
+else{
+
+    document.getElementById("estado").innerHTML="⚓ Amarrado";
+    document.getElementById("ubicacion").innerHTML="📍 "+actual.lugar;
+
+    const hora = new Date().toLocaleTimeString("es-AR",{
+        timeZone: actual.zona,
+        hour:'2-digit',
+        minute:'2-digit'
+    });
+
+    document.getElementById("hora").innerHTML="🕒 "+hora;
+    document.getElementById("detalle").innerHTML="Puerto actual";
+}
 
 </script>
 
