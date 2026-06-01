@@ -157,7 +157,27 @@ const horaPuerto = new Intl.DateTimeFormat('en-GB',{
 
 if(horaPuerto < escala.salida){
 
+ const horaPuerto = new Intl.DateTimeFormat(
+'en-GB',
+{
+timeZone: escala.timezone,
+hour:'2-digit',
+minute:'2-digit',
+hour12:false
+}
+).format(new Date());
+
+if (horaPuerto < escala.salida){
+
     document.getElementById("estado").innerHTML="🟢 AMARRADO";
+    document.getElementById("estado").className="estado amarrado";
+
+} else {
+
+    document.getElementById("estado").innerHTML="🟠 NAVEGANDO";
+    document.getElementById("estado").className="estado navegando";
+
+}
     document.getElementById("estado").className="estado amarrado";
 
 } else {
