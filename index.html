@@ -3,140 +3,190 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Estado del Brilliance</title>
+
+<title>🚢 Brilliance Tracker</title>
 
 <style>
 body{
-    font-family: Arial, sans-serif;
-    background:#0d1b2a;
-    color:white;
-    text-align:center;
-    padding:30px;
+margin:0;
+font-family:Arial,sans-serif;
+background:#0d1b2a;
+color:white;
 }
+
+header{
+background:#1b263b;
+padding:20px;
+text-align:center;
+font-size:28px;
+font-weight:bold;
+}
+
 .card{
-    max-width:700px;
-    margin:auto;
-    background:#1b263b;
-    padding:25px;
-    border-radius:15px;
-    box-shadow:0 0 15px rgba(0,0,0,.4);
+margin:15px;
+background:#1b263b;
+padding:20px;
+border-radius:15px;
+box-shadow:0 0 15px rgba(0,0,0,.3);
 }
+
 .estado{
-    font-size:2rem;
-    font-weight:bold;
-    margin:15px 0;
+font-size:32px;
+font-weight:bold;
+margin-bottom:20px;
 }
-.amarrado{color:#4caf50;}
-.navegando{color:#ff9800;}
+
+.amarrado{
+color:#4CAF50;
+}
+
+.navegando{
+color:#FF9800;
+}
+
 .info{
-    font-size:1.2rem;
-    margin:10px 0;
+font-size:20px;
+margin:10px 0;
+}
+
+footer{
+text-align:center;
+padding:15px;
+opacity:.7;
 }
 </style>
 </head>
+
 <body>
 
-<div class="card">
-    <h1>🚢 Brilliance of the Seas</h1>
+<header>
+🚢 Brilliance of the Seas
+</header>
 
-    <div id="estado" class="estado"></div>
-    <div id="ubicacion" class="info"></div>
-    <div id="ruta" class="info"></div>
-    <div id="hora" class="info"></div>
+<div class="card">
+
+<div id="estado" class="estado"></div>
+
+<div id="puerto" class="info"></div>
+<div id="hora" class="info"></div>
+<div id="ruta" class="info"></div>
+<div id="fecha" class="info"></div>
+
 </div>
+
+<footer>
+Actualización automática cada segundo
+</footer>
 
 <script>
 
 const itinerario = [
-{fecha:"2026-06-01", puerto:"Piraeus", pais:"Grecia", llegada:"05:00", salida:"17:00"},
-{fecha:"2026-06-02", puerto:"Mykonos", pais:"Grecia", llegada:"07:00", salida:"17:00"},
-{fecha:"2026-06-03", puerto:"Istanbul", pais:"Turquía", llegada:"13:00", salida:null},
-{fecha:"2026-06-04", puerto:"Istanbul", pais:"Turquía", llegada:null, salida:"21:00"},
-{fecha:"2026-06-05", puerto:"Cruising", pais:"Mar Mediterráneo"},
-{fecha:"2026-06-06", puerto:"Kusadasi", pais:"Turquía", llegada:"08:00", salida:"18:00"},
-{fecha:"2026-06-07", puerto:"Santorini", pais:"Grecia", llegada:"07:00", salida:"20:00"}
+
+{fecha:"2026-06-01", puerto:"Piraeus", pais:"Grecia", salida:"17:00", timezone:"Europe/Athens"},
+{fecha:"2026-06-02", puerto:"Mykonos", pais:"Grecia", salida:"17:00", timezone:"Europe/Athens"},
+{fecha:"2026-06-03", puerto:"Istanbul", pais:"Turquía", salida:"23:59", timezone:"Europe/Istanbul"},
+{fecha:"2026-06-04", puerto:"Istanbul", pais:"Turquía", salida:"21:00", timezone:"Europe/Istanbul"},
+{fecha:"2026-06-05", puerto:"CRUISING"},
+{fecha:"2026-06-06", puerto:"Kusadasi", pais:"Turquía", salida:"18:00", timezone:"Europe/Istanbul"},
+{fecha:"2026-06-07", puerto:"Santorini", pais:"Grecia", salida:"20:00", timezone:"Europe/Athens"},
+{fecha:"2026-06-08", puerto:"Piraeus", pais:"Grecia", salida:"17:00", timezone:"Europe/Athens"},
+{fecha:"2026-06-09", puerto:"Mykonos", pais:"Grecia", salida:"17:00", timezone:"Europe/Athens"},
+{fecha:"2026-06-10", puerto:"Kusadasi", pais:"Turquía", salida:"18:00", timezone:"Europe/Istanbul"},
+{fecha:"2026-06-11", puerto:"Santorini", pais:"Grecia", salida:"22:00", timezone:"Europe/Athens"},
+{fecha:"2026-06-12", puerto:"Chania", pais:"Grecia", salida:"17:00", timezone:"Europe/Athens"},
+{fecha:"2026-06-13", puerto:"Katakolon", pais:"Grecia", salida:"17:00", timezone:"Europe/Athens"},
+{fecha:"2026-06-14", puerto:"CRUISING"},
+{fecha:"2026-06-15", puerto:"Civitavecchia", pais:"Italia", salida:"17:00", timezone:"Europe/Rome"},
+{fecha:"2026-06-16", puerto:"Livorno", pais:"Italia", salida:"20:00", timezone:"Europe/Rome"},
+{fecha:"2026-06-17", puerto:"Santa Margherita", pais:"Italia", salida:"19:00", timezone:"Europe/Rome"},
+{fecha:"2026-06-18", puerto:"Villefranche", pais:"Francia", salida:"19:00", timezone:"Europe/Paris"},
+{fecha:"2026-06-19", puerto:"Marseille", pais:"Francia", salida:"18:00", timezone:"Europe/Paris"},
+{fecha:"2026-06-20", puerto:"CRUISING"},
+{fecha:"2026-06-21", puerto:"Ibiza", pais:"España", salida:"19:00", timezone:"Europe/Madrid"},
+{fecha:"2026-06-22", puerto:"Barcelona", pais:"España", salida:"17:00", timezone:"Europe/Madrid"},
+{fecha:"2026-06-23", puerto:"Toulon", pais:"Francia", salida:"17:00", timezone:"Europe/Paris"},
+{fecha:"2026-06-24", puerto:"Ajaccio", pais:"Francia", salida:"17:00", timezone:"Europe/Paris"},
+{fecha:"2026-06-25", puerto:"Civitavecchia", pais:"Italia", salida:"19:00", timezone:"Europe/Rome"},
+{fecha:"2026-06-26", puerto:"Naples", pais:"Italia", salida:"19:00", timezone:"Europe/Rome"},
+{fecha:"2026-06-27", puerto:"Messina", pais:"Italia", salida:"17:00", timezone:"Europe/Rome"},
+{fecha:"2026-06-28", puerto:"CRUISING"},
+{fecha:"2026-06-29", puerto:"Ravenna", pais:"Italia", salida:"17:00", timezone:"Europe/Rome"},
+{fecha:"2026-06-30", puerto:"Koper", pais:"Eslovenia", salida:"17:00", timezone:"Europe/Ljubljana"}
+
 ];
 
-const ahora = new Date();
+function actualizar(){
 
-function hoyStr(){
-    return ahora.toISOString().split("T")[0];
+const ahora = new Date();
+const hoy = ahora.toISOString().split("T")[0];
+
+const indice = itinerario.findIndex(i=>i.fecha===hoy);
+
+if(indice===-1){
+
+document.getElementById("estado").innerHTML="📅 Fecha fuera del itinerario";
+return;
+
 }
 
-const hoy = itinerario.find(i => i.fecha === hoyStr());
+const escala = itinerario[indice];
 
-const estadoDiv = document.getElementById("estado");
-const ubicacionDiv = document.getElementById("ubicacion");
-const rutaDiv = document.getElementById("ruta");
-const horaDiv = document.getElementById("hora");
+if(escala.puerto==="CRUISING"){
 
-if(hoy){
+document.getElementById("estado").innerHTML="🟠 NAVEGANDO";
+document.getElementById("estado").className="estado navegando";
 
-    if(hoy.puerto === "Cruising"){
+const origen = itinerario[indice-1];
+const destino = itinerario[indice+1];
 
-        estadoDiv.textContent = "🟠 NAVEGANDO";
-        estadoDiv.className = "estado navegando";
+document.getElementById("puerto").innerHTML=
+"🌊 En navegación";
 
-        const ayerIndex = itinerario.findIndex(i=>i.fecha===hoy.fecha)-1;
-        const mananaIndex = itinerario.findIndex(i=>i.fecha===hoy.fecha)+1;
+document.getElementById("ruta").innerHTML=
+"➡️ Desde <b>"+origen.puerto+
+"</b> hacia <b>"+destino.puerto+"</b>";
 
-        const origen = itinerario[ayerIndex];
-        const destino = itinerario[mananaIndex];
-
-        rutaDiv.innerHTML =
-            `Desde <b>${origen.puerto}</b> (${origen.pais})<br>
-             Hacia <b>${destino.puerto}</b> (${destino.pais})`;
-
-        ubicacionDiv.textContent = "En navegación";
-        horaDiv.textContent = "";
-    }
-
-    else{
-
-        const [h,m] = (hoy.salida || "23:59").split(":");
-        const salidaHoy = new Date();
-        salidaHoy.setHours(h,m);
-
-        if(ahora < salidaHoy){
-
-            estadoDiv.textContent = "🟢 AMARRADO";
-            estadoDiv.className = "estado amarrado";
-
-            ubicacionDiv.innerHTML =
-            `<b>${hoy.puerto}</b>, ${hoy.pais}`;
-
-            const horaLocal = new Intl.DateTimeFormat('es-ES',{
-                hour:'2-digit',
-                minute:'2-digit',
-                second:'2-digit'
-            }).format(new Date());
-
-            horaDiv.innerHTML =
-            `Hora local: <b>${horaLocal}</b>`;
-
-            rutaDiv.innerHTML =
-            `Salida prevista: <b>${hoy.salida}</b>`;
-        }
-
-        else{
-
-            const indice = itinerario.findIndex(i=>i.fecha===hoy.fecha);
-            const destino = itinerario[indice+1];
-
-            estadoDiv.textContent = "🟠 NAVEGANDO";
-            estadoDiv.className = "estado navegando";
-
-            rutaDiv.innerHTML =
-            `Desde <b>${hoy.puerto}</b> (${hoy.pais})<br>
-             Hacia <b>${destino.puerto}</b> (${destino.pais})`;
-
-            ubicacionDiv.textContent = "En navegación";
-        }
-    }
+document.getElementById("hora").innerHTML="";
 }
 else{
-    estadoDiv.textContent = "No hay datos para esta fecha";
+
+const horaPuerto = new Intl.DateTimeFormat(
+'es-AR',
+{
+timeZone:escala.timezone,
+hour:'2-digit',
+minute:'2-digit',
+second:'2-digit'
 }
+).format(new Date());
+
+document.getElementById("estado").innerHTML="🟢 AMARRADO";
+document.getElementById("estado").className="estado amarrado";
+
+document.getElementById("puerto").innerHTML=
+"⚓ "+escala.puerto+
+", "+escala.pais;
+
+document.getElementById("hora").innerHTML=
+"🕒 Hora local: <b>"+horaPuerto+"</b>";
+
+const destino = itinerario[indice+1];
+
+if(destino){
+
+document.getElementById("ruta").innerHTML=
+"➡️ Próximo destino: <b>"+destino.puerto+"</b>";
+
+}
+}
+
+document.getElementById("fecha").innerHTML=
+"📅 "+ahora.toLocaleDateString('es-AR');
+
+}
+
+actualizar();
+setInterval(actualizar,1000);
 
 </script>
 
