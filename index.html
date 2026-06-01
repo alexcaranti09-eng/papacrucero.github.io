@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Brilliance Tracker</title>
+<title>Donde esta papa </title>
 
 <style>
 body{
@@ -45,7 +45,7 @@ margin:12px 0;
 
 <div class="card">
 
-<h1>🚢 Brilliance of the Seas</h1>
+<h1>🚢 Donde esa el abuelo</h1>
 
 <div id="estado" class="estado"></div>
 <div id="info1" class="info"></div>
@@ -150,7 +150,7 @@ const destino = itinerario[indice+1];
 
 if(hhmm < escala.salida){
 
-document.getElementById("estado").innerHTML = "🟢 AMARRADO";
+document.getElementById("estado").innerHTML = "🟢 NAVEGANDO";
 document.getElementById("estado").className = "estado amarrado";
 
 document.getElementById("info1").innerHTML =
@@ -167,7 +167,7 @@ destino ? "➡️ Próximo puerto: <b>"+destino.puerto+"</b>" : "";
 
 }else{
 
-document.getElementById("estado").innerHTML = "🟠 NAVEGANDO";
+document.getElementById("estado").innerHTML = "🟠 AMARRADO";
 document.getElementById("estado").className = "estado navegando";
 
 document.getElementById("info1").innerHTML =
