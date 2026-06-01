@@ -3,28 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Brilliance Tracker</title>
 
 <style>
 body{
-    font-family:Arial,sans-serif;
     background:#0d1b2a;
     color:white;
-    text-align:center;
-    padding:20px;
+    font-family:Arial,sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    margin:0;
 }
 
 .card{
-    max-width:700px;
-    margin:auto;
     background:#1b263b;
-    padding:25px;
-    border-radius:15px;
+    padding:30px;
+    border-radius:20px;
+    width:90%;
+    max-width:700px;
+    text-align:center;
+}
+
+h1{
+    margin-top:0;
 }
 
 .estado{
-    font-size:32px;
+    font-size:36px;
     font-weight:bold;
     margin:20px 0;
 }
@@ -39,7 +46,7 @@ body{
 
 .info{
     font-size:22px;
-    margin:15px 0;
+    margin:12px 0;
 }
 </style>
 </head>
@@ -50,69 +57,72 @@ body{
 <h1>🚢 Brilliance of the Seas</h1>
 
 <div id="estado" class="estado"></div>
-
-<div id="puerto" class="info"></div>
-<div id="hora" class="info"></div>
-<div id="destino" class="info"></div>
+<div id="info1" class="info"></div>
+<div id="info2" class="info"></div>
+<div id="info3" class="info"></div>
 
 </div>
 
 <script>
 
-const escalas = [
-{
-puerto:"Mykonos",
-pais:"Grecia",
-zona:"Europe/Athens",
-salida:"17:00",
-destino:"Piraeus"
-}
-];
-
-const escala = escalas[0];
+const puertoActual = {
+    puerto: "Mykonos",
+    pais: "Grecia",
+    zona: "Europe/Athens",
+    salida: "17:00",
+    siguientePuerto: "Kusadasi",
+    siguientePais: "Turquía"
+};
 
 function actualizar(){
 
-const horaPuerto = new Intl.DateTimeFormat(
-'es-AR',
-{
-timeZone: escala.zona,
-hour:'2-digit',
-minute:'2-digit',
-second:'2-digit',
-hour12:false
-}
-).format(new Date());
+    const horaLocal = new Intl.DateTimeFormat(
+        'en-GB',
+        {
+            timeZone: puertoActual.zona,
+            hour:'2-digit',
+            minute:'2-digit',
+            second:'2-digit',
+            hour12:false
+        }
+    ).format(new Date());
 
-document.getElementById("puerto").innerHTML =
-"⚓ Puerto: <b>" + escala.puerto + "</b> - " + escala.pais;
+    const horaComparacion = horaLocal.substring(0,5);
 
-document.getElementById("hora").innerHTML =
-"🕒 Hora local: <b>" + horaPuerto + "</b>";
+    if(horaComparacion < puertoActual.salida){
 
-document.getElementById("destino").innerHTML =
-"➡️ Próximo destino: <b>" + escala.destino + "</b>";
+        document.getElementById("estado").innerHTML =
+        "🟢 AMARRADO";
 
-const horaActual = horaPuerto.substring(0,5);
+        document.getElementById("estado").className =
+        "estado amarrado";
 
-if(horaActual < escala.salida){
+        document.getElementById("info1").innerHTML =
+        "⚓ Puerto: <b>" + puertoActual.puerto + "</b>";
 
-document.getElementById("estado").innerHTML =
-"🟢 AMARRADO";
+        document.getElementById("info2").innerHTML =
+        "🌍 País: <b>" + puertoActual.pais + "</b>";
 
-document.getElementById("estado").className =
-"estado amarrado";
+        document.getElementById("info3").innerHTML =
+        "🕒 Hora local: <b>" + horaLocal + "</b>";
 
-}else{
+    } else {
 
-document.getElementById("estado").innerHTML =
-"🟠 NAVEGANDO";
+        document.getElementById("estado").innerHTML =
+        "🟠 NAVEGANDO";
 
-document.getElementById("estado").className =
-"estado navegando";
+        document.getElementById("estado").className =
+        "estado navegando";
 
-}
+        document.getElementById("info1").innerHTML =
+        "🚢 Navegando desde <b>" + puertoActual.puerto + "</b>";
 
+        document.getElementById("info2").innerHTML =
+        "➡️ Hacia <b>" + puertoActual.siguientePuerto + "</b>";
+
+        document.getElementById("info3").innerHTML =
+        "🌍 Destino: <b>" + puertoActual.siguientePais + "</b>";
+    }
 }
 
 actualizar();
